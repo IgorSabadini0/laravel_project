@@ -44,7 +44,7 @@ h1 {
     letter-spacing: -1px;
     background: linear-gradient(270deg, #ff007f, #7928ca, #4200ff, #ff007f);
     background-size: 600% 600%;
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradientAnimation 8s ease infinite;
     margin-bottom: 2rem;
