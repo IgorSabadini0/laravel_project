@@ -109,9 +109,26 @@
         <br>
         <br>
         @if (session('sucesso'))
-            <p style="color: #4ade80; font-weight: 600; margin-bottom: 1rem;">{{ session('sucesso') }}</p>
+            <p style="color: #4ade80; font-weight: 600; margin-bottom: 1rem; display: block;">{{ session('sucesso') }}</p>
         @endif
-    </div>
 
+        @foreach ($produtos as $produto)
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem;">
+                <h2 style="font-size: 1.25rem; font-weight: 600;">{{ $produto->nome }}</h2>
+                <p style="color: #94a3b8;">Preço: R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
+                <p style="color: #94a3b8;">Criado em: {{ $produto->created_at->format('d/m/Y H:i') }}</p>
+                <p style="color: #94a3b8;">Id: {{ $produto->id }}</p>
+            </div>
+        @endforeach
+    </div>
+    <!-- 3 segundos e a msg de sucesso deve sair -->
+    <script>
+        setTimeout(() => {
+            const successMessage = document.querySelector('p[style*="color: #4ade80"]');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 </body>
 </html>
