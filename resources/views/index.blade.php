@@ -100,6 +100,8 @@
     <div class="card">
         <h1>Laravel</h1>
         <p>Ambiente de Teste Ativo</p>
+        <!-- Vai pegar a rota do ProdutoController -->
+        <p>Route: <strong>/produtos</strong></p>
     </div>
 
 </body>
