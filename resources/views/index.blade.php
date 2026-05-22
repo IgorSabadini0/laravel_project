@@ -102,6 +102,15 @@
         <p>Ambiente de Teste Ativo</p>
         <!-- Vai pegar a rota do ProdutoController -->
         <p>Route: <strong>/produtos</strong></p>
+        <br>
+        <a href="/produtos/create" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #6366f1; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background-color 0.3s ease;">
+            Criar Produto
+        </a>
+        <br>
+        <br>
+        @if (session('sucesso'))
+            <p style="color: #4ade80; font-weight: 600; margin-bottom: 1rem;">{{ session('sucesso') }}</p>
+        @endif
     </div>
 
 </body>
