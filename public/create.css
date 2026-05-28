@@ -83,6 +83,65 @@ input[type="text"] {
     outline: none;
 }
 
+/* Input de upload de imagem */
+input[type="file"] {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 0.9rem;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(270deg, #ff007f, #7928ca, #4200ff, #ff007f);
+    background-size: 600% 600%;
+    animation: gradientAnimation 8s ease infinite;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+input[type="file"]:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #7928ca;
+    box-shadow: 0 0 20px rgba(121, 40, 202, 0.25);
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    margin-right: 0.9rem;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(270deg, #ff007f, #7928ca, #4200ff, #ff007f);
+    background-size: 600% 600%;
+    animation: gradientAnimation 8s ease infinite;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
 /* Efeito de foco nos inputs */
 input[type="text"]:focus {
     background: rgba(255, 255, 255, 0.08);

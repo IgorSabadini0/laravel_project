@@ -13,7 +13,7 @@
     <div class="form-container">
         <h1>Cadastrar Produto</h1>
 
-        <form action="/produtos" method="POST">
+        <form action="/produtos" method="POST" enctype="multipart/form-data">
             <!-- Token de segurança do Laravel -->
             @csrf
             <div class="input-group">
@@ -24,6 +24,11 @@
             <div class="input-group">
                 <label for="preco">Preço:</label>
                 <input type="text" id="preco" name="preco" autocomplete="off" required>
+            </div>
+
+            <div class="input-group">
+                <label for="imagem">Imagem:</label>
+                <input type="file" id="imagem" name="imagem" autocomplete="off" required>
             </div>
 
             <button type="submit">Cadastrar</button>
