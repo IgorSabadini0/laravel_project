@@ -118,6 +118,13 @@
                 <p style="color: #94a3b8;">Preço: R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
                 <p style="color: #94a3b8;">Criado em: {{ $produto->created_at->format('d/m/Y H:i') }}</p>
                 <p style="color: #94a3b8;">Id: {{ $produto->id }}</p>
+                <div class="imagem">
+                    @if ($produto->imagem)
+                        <img src="{{ asset('storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="max-width: 100px; border-radius: 4px; margin-top: 0.5rem;">
+                    @else
+                        <p style="color: #f87171;">Sem imagem disponível</p>
+                    @endif
+                </div>
             </div>
         @endforeach
     </div>

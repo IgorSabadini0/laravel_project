@@ -28,7 +28,7 @@
 
             <div class="input-group">
                 <label for="imagem">Imagem:</label>
-                <input type="file" id="imagem" name="imagem" autocomplete="off" required>
+                <input type="file" id="imagem" name="imagem" accept="image/*">
             </div>
 
             <button type="submit">Cadastrar</button>

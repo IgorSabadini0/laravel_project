@@ -22,6 +22,17 @@ class ProdutoController extends Controller
         // Pegando os dados do formulário;
         $dados = $request->only(['nome', 'preco']);
         // INSERT INTO produtos (nome, preco) VALUES ($dados['nome'], $dados['preco']);
+        if ($request->hasFile("imagem")) {
+            $pasta = public_path("images/produtos");
+            if (!is_dir($pasta)) {
+                mkdir($pasta, 0755, true);
+            }
+
+            $imagem = $request->file("imagem");
+            $nomeImagem = time() . "_" . $imagem->getClientOriginalName();
+            $imagem->move($pasta, $nomeImagem);
+            $dados['imagem'] = "images/produtos/" . $nomeImagem;    
+        }
         Produto::create($dados);
         // Redirecionando para a página de listagem de produtos e exibindo uma mensagem de sucesso;
         return redirect()->to("/produtos")->with("sucesso", "Produto criado com sucesso!");
