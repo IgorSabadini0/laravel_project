@@ -37,4 +37,16 @@ class ProdutoController extends Controller
         // Redirecionando para a página de listagem de produtos e exibindo uma mensagem de sucesso;
         return redirect()->to("/produtos")->with("sucesso", "Produto criado com sucesso!");
     }
+
+    public function buscar(Request $request) {
+        $busca = $request->input("busca", "");
+
+        if (empty($busca)) {
+            return redirect()->to("/produtos");
+        }
+
+        $produtos = Produto::where("nome", "like", "%$busca%")->get();
+
+        return view("index", ["produtos" => $produtos]);
+    }
 }
