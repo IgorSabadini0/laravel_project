@@ -59,6 +59,14 @@
                 <input type="text" id="preco" name="preco" autocomplete="off" required value="{{ $produto->preco }}">
             </div>
 
+            <div class="imagem" style="margin: 1rem 0; display: flex; justify-content: center; align-items: center; width: 100%;">
+                    @if ($produto->imagem)
+                        <img src="{{ asset('/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="max-width: 130px; border-radius: 6px;">
+                    @else
+                        <p style="color: #f87171; text-transform: none; letter-spacing: normal; font-size: 0.85rem;">Sem imagem disponível</p>
+                    @endif
+                </div>
+
             <div class="input-group">
                 <label for="imagem">Imagem:</label>
                 <input type="file" id="imagem" name="imagem" accept="image/*">
