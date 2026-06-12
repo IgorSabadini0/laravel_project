@@ -43,6 +43,8 @@
             transition: transform 0.3s ease, border-color 0.3s ease;
             max-height: 90vh; /* Evita que o card estoure a tela se houver muitos produtos */
             overflow-y: auto;  /* Adiciona scroll interno caso necessário */
+            width: 100%;
+            max-width: 650px;
         }
 
         .card:hover {
@@ -97,13 +99,14 @@
         }
 
         /* ==========================================================================
-           ESTILIZAÇÃO DO FORMULÁRIO DE BUSCA (ADICIONADO/AJEITADO)
+           FORMULÁRIO DE BUSCA
            ========================================================================== */
         .search-form {
             display: flex;
             gap: 0.5rem;
             margin: 1.5rem 0;
             width: 100%;
+            align-items: center;
         }
 
         .search-input {
@@ -148,6 +151,89 @@
         .search-button:active {
             transform: scale(0.98);
         }
+
+        .clear-button {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .clear-button:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        .clear-button:active {
+            transform: scale(0.98);
+        }
+
+        /* ==========================================================================
+           BOTÕES DE AÇÃO DOS PRODUTOS (CORRIGIDOS E UNIFICADOS)
+           ========================================================================== */
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .product-actions form {
+            flex: 1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-action:active {
+            transform: scale(0.96);
+        }
+
+        /* Variação Editar (Azul/Roxo) */
+        .btn-edit {
+            background-color: #6366f1;
+            color: #fff;
+        }
+
+        .btn-edit:hover {
+            background-color: #4f46e5;
+        }
+
+        /* Variação Excluir (Vermelho sutil que ganha destaque no hover) */
+        .btn-delete {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            background-color: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
     </style>
 </head>
 <body>
@@ -167,33 +253,56 @@
         @endif
 
         <form action="/produtos/buscar" method="get" class="search-form">
-            @csrf <input type="text" name="busca" placeholder="Buscar produtos..." class="search-input">
+            @csrf 
+            <input type="text" name="busca" placeholder="Buscar produtos..." class="search-input" value="{{ $busca ?? '' }}">
             <button type="submit" class="search-button">Buscar</button>
+            @if(!empty($busca))
+                <a href="/produtos" class="clear-button">Limpar</a>
+            @endif
         </form>
 
-        @foreach ($produtos as $produto)
-            <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; text-align: left;">
-                <h2 style="font-size: 1.25rem; font-weight: 600;">{{ $produto->nome }}</h2>
-                <p style="color: #94a3b8; text-transform: none; letter-spacing: normal;">Preço: R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
-                <p style="color: #94a3b8; text-transform: none; letter-spacing: normal;">Criado em: {{ $produto->created_at->format('d/m/Y H:i') }}</p>
-                <p style="color: #94a3b8; text-transform: none; letter-spacing: normal;">Id: {{ $produto->id }}</p>
-                <div class="imagem">
+        @forelse ($produtos as $produto)
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 1.25rem; border-radius: 12px; margin-bottom: 0.75rem; text-align: left; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem;">{{ $produto->nome }}</h2>
+                <p style="color: #94a3b8; text-transform: none; letter-spacing: normal; font-size: 0.9rem; margin-bottom: 0.15rem;">Preço: R$ {{ number_format($produto->preco, 2, ',', '.') }}</p>
+                <p style="color: #64748b; text-transform: none; letter-spacing: normal; font-size: 0.85rem; margin-bottom: 0.15rem;">Criado em: {{ $produto->created_at->format('d/m/Y H:i') }}</p>
+                <p style="color: #64748b; text-transform: none; letter-spacing: normal; font-size: 0.85rem; margin-bottom: 0.5rem;">Id: {{ $produto->id }}</p>
+                
+                <div class="imagem" style="margin: 1rem 0; display: flex; justify-content: center; align-items: center; width: 100%;">
                     @if ($produto->imagem)
-                        <img src="{{ asset('/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="max-width: 100px; border-radius: 4px; margin-top: 0.5rem;">
+                        <img src="{{ asset('/' . $produto->imagem) }}" alt="{{ $produto->nome }}" style="max-width: 130px; border-radius: 6px;">
                     @else
-                        <p style="color: #f87171; text-transform: none; letter-spacing: normal; font-size: 0.85rem; margin-top: 0.5rem;">Sem imagem disponível</p>
+                        <p style="color: #f87171; text-transform: none; letter-spacing: normal; font-size: 0.85rem;">Sem imagem disponível</p>
                     @endif
                 </div>
-                <!-- delete button -->
-                <form action="/produtos/{{ $produto->id }}" method="post" style="margin-top: 0.5rem;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" style="background: #ef4444; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease;">
-                        Excluir
-                    </button>
-                </form>
+
+                <div class="product-actions">
+                    <a href="/produtos/{{ $produto->id }}/edit" class="btn-action btn-edit">
+                        Editar
+                    </a>
+                    
+                    <form action="/produtos/{{ $produto->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-action btn-delete">
+                            Excluir
+                        </button>
+                    </form>
+                </div>
             </div>
-        @endforeach
+        @empty
+            <div style="background: rgba(255, 255, 255, 0.02); padding: 2rem; border-radius: 8px; border: 1px dashed rgba(255, 255, 255, 0.15); margin-top: 1rem;">
+                @if(!empty($busca))
+                    <p style="color: #f87171; text-transform: none; letter-spacing: normal; font-size: 1.05rem;">
+                        🔍 Nenhum produto encontrado para a busca: <strong>"{{ $busca }}"</strong>
+                    </p>
+                @else
+                    <p style="color: #94a3b8; text-transform: none; letter-spacing: normal; font-size: 1.05rem;">
+                        📦 Nenhum produto cadastrado no momento.
+                    </p>
+                @endif
+            </div>
+        @endforelse
     </div>
 
     <script>

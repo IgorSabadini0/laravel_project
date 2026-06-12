@@ -10,7 +10,7 @@ class ProdutoController extends Controller
     public function index()
     {
         $produtos = Produto::all();
-        return view("index", ["produtos" => $produtos]);
+        return view("index", ["produtos" => $produtos, "busca" => null]);
     }
 
     public function create()
@@ -47,6 +47,37 @@ class ProdutoController extends Controller
 
         $produtos = Produto::where("nome", "like", "%$busca%")->get();
 
-        return view("index", ["produtos" => $produtos]);
+        return view("index", ["produtos" => $produtos, "busca" => $busca]);
+    }
+
+    public function deletar($id) {
+        $produto = Produto::findOrFail($id);
+        $produto->delete();
+        return redirect()->to("/produtos")->with("sucesso", "Produto deletado com sucesso!");
+    }
+
+    public function edit($id) {
+        $produto = Produto::findOrFail($id);
+        return view("edit", ["produto" => $produto]);
+    }
+
+    public function update(Request $request, $id) {
+        $produto = Produto::findOrFail($id);
+        $dados = $request->only(['nome', 'preco']);
+
+        if ($request->hasFile("imagem")) {
+            $pasta = public_path("images/produtos");
+            if (!is_dir($pasta)) {
+                mkdir($pasta, 0755, true);
+            }
+
+            $imagem = $request->file("imagem");
+            $nomeImagem = time() . "_" . $imagem->getClientOriginalName();
+            $imagem->move($pasta, $nomeImagem);
+            $dados['imagem'] = "images/produtos/" . $nomeImagem;    
+        }
+
+        $produto->update($dados);
+        return redirect()->to("/produtos")->with("sucesso", "Produto atualizado com sucesso!");
     }
 }
