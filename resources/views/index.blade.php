@@ -21,11 +21,11 @@
                 radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
                 radial-gradient(at 50% 0%, hsla(225,39%,30%,0.3) 0, transparent 50%), 
                 radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
-            height: 100vh;
+            min-height: 100vh; /* Mudado de height para min-height para a página crescer se precisar */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            padding: 2rem 0; /* Espaçamento nas bordas em telas menores */
             color: #fff;
         }
 
@@ -41,10 +41,15 @@
             text-align: center;
             position: relative;
             transition: transform 0.3s ease, border-color 0.3s ease;
-            max-height: 90vh; /* Evita que o card estoure a tela se houver muitos produtos */
-            overflow-y: auto;  /* Adiciona scroll interno caso necessário */
             width: 100%;
             max-width: 650px;
+            /* Removidos o max-height e o overflow-y para eliminar a barra de scroll interna */
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 2rem; /* Melhora o visual em celulares */
+            }
         }
 
         .card:hover {
@@ -239,9 +244,7 @@
 <body>
 
     <div class="card">
-        <h1>Laravel</h1>
-        <p>Ambiente de Teste Ativo</p>
-        <p>Route: <strong>/produtos</strong></p>
+        <h1>Cadastro de Produtos</h1>
         <br>
         <a href="/produtos/create" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #6366f1; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background-color 0.3s ease;">
             Criar Produto
@@ -249,7 +252,7 @@
         <br>
         <br>
         @if (session('sucesso'))
-            <p style="color: #4ade80; font-weight: 600; margin-bottom: 1rem; display: block;">{{ session('sucesso') }}</p>
+            <p id="msg-sucesso" style="color: #4ade80; font-weight: 600; margin-bottom: 1rem; display: block; text-transform: none; letter-spacing: normal;">{{ session('sucesso') }}</p>
         @endif
 
         <form action="/produtos/buscar" method="get" class="search-form">
@@ -307,7 +310,7 @@
 
     <script>
         setTimeout(() => {
-            const successMessage = document.querySelector('p[style*="color: #4ade80"]');
+            const successMessage = document.getElementById('msg-sucesso');
             if (successMessage) {
                 successMessage.style.display = 'none';
             }

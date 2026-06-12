@@ -63,21 +63,23 @@ class ProdutoController extends Controller
 
     public function update(Request $request, $id) {
         $produto = Produto::findOrFail($id);
+
         $dados = $request->only(['nome', 'preco']);
 
         if ($request->hasFile("imagem")) {
             $pasta = public_path("images/produtos");
-            if (!is_dir($pasta)) {
-                mkdir($pasta, 0755, true);
-            }
+            $extensaoImagem = $request->file("imagem")->getClientOriginalExtension();
+            $nomeImagem = uniqid() . "." . $extensaoImagem;
 
-            $imagem = $request->file("imagem");
-            $nomeImagem = time() . "_" . $imagem->getClientOriginalName();
-            $imagem->move($pasta, $nomeImagem);
-            $dados['imagem'] = "images/produtos/" . $nomeImagem;    
+            $dados['imagem'] = "images/produtos/" . $nomeImagem;
+
+            $request->file("imagem")->move(public_path("images/produtos"), $nomeImagem);
         }
 
         $produto->update($dados);
+        
         return redirect()->to("/produtos")->with("sucesso", "Produto atualizado com sucesso!");
+
     }
+
 }
